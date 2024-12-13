@@ -51,7 +51,7 @@ jobs:
           aws elasticbeanstalk create-application-version \
             --application-name $ELASTIC_BEANSTALK_NAME \
             --version-label "mybukuapp-version-${{ github.run_number }}" \
-            --source-bundle S3Bucket="mybuku-app-bucket",S3Key="$ZIP_NAME"
+            --source-bundle S3Bucket="mybukustore",S3Key="$ZIP_NAME"
 
       - name: Update Environment
         run: |
