@@ -12,7 +12,7 @@ jobs:
 
     env:
       ELASTIC_BEANSTALK_NAME: mybukuapp
-      ELASTIC_BEANSTALK_ENV_NAME: mybuku
+      ELASTIC_BEANSTALK_ENV_NAME: MybukuappEnvironment
 
     steps:
       - name: Checkout Code
