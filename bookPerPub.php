@@ -13,7 +13,7 @@
 	$conn = db_connect();
 	$pubName = getPubName($conn, $pubid);
 
-	$query = "SELECT book_isbn, book_title, book_image, book_descr FROM books WHERE publisherid = '$pubid'";
+	$query = "SELECT book_isbn, book_title, book_image, book_descr FROM books WHERE publisherId = '$pubid'";
 	$result = mysqli_query($conn, $query);
 	if(!$result){
 		echo "Can't retrieve data " . mysqli_error($conn);

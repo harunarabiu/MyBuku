@@ -1,0 +1,7 @@
+*.git
+tests/*
+ *.env 
+ *.zip
+ node_modules/*
+ database/*
+ vendor/*

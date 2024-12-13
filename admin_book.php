@@ -54,7 +54,7 @@
 						<td class="px-2 py-1 align-middle"><?php echo $row['book_image']; ?></td>
 						<td class="px-2 py-1 align-middle"><p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p></td>
 						<td class="px-2 py-1 align-middle"><?php echo $row['book_price']; ?></td>
-						<td class="px-2 py-1 align-middle"><?php echo getPubName($conn, $row['publisherid']); ?></td>
+						<td class="px-2 py-1 align-middle"><?php echo getPubName($conn, $row['publisherId']); ?></td>
 						<td class="px-2 py-1 align-middle text-center">
 							<div class="btn-group btn-group-sm">
 								<a href="admin_edit.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-sm rounded-0 btn-primary" title="Edit"><i class="fa fa-edit"></i></a>

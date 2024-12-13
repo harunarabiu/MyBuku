@@ -1,6 +1,21 @@
 <?php
 	function db_connect(){
-		$conn = mysqli_connect("localhost", "root", "", "mybuku");
+		// $db_host = "mynetwork-rdsinstance-ld8ekrenleuz.chqmq2008d5p.ap-southeast-1.rds.amazonaws.com";
+		// $db_name = "mybuku";
+		// $db_user = "admin";
+        // $db_password = "MyBuku123!";
+
+
+		//local DB configurations
+
+		$db_host = "localhost";
+		$db_name = "mybuku";
+		$db_user = "root";
+        $db_password = "";
+        
+		
+		$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+
 		if(!$conn){
 			echo "Can't connect database " . mysqli_connect_error($conn);
 			exit;
@@ -22,6 +37,30 @@
 		return $row;
 	}
 
+   // Fetch all orders (for admins)
+	function getAllOrders($conn) {
+		$conn = db_connect();
+		$query = "SELECT * FROM orders";
+		return mysqli_query($conn, $query);
+	}
+
+	// Fetch orders for a specific user (for regular users)
+	function getUserOrders($conn, $userId) {
+		$conn = db_connect();
+		$query = "SELECT * FROM orders WHERE userId = '$userId'";
+		return mysqli_query($conn, $query);
+	}
+
+	// Fetch user name based on user_id
+	function getUserName($conn, $userId) {
+		$conn = db_connect();
+		$query = "SELECT name FROM users WHERE userId = '$userId'";
+		$result = mysqli_query($conn, $query);
+		$row = mysqli_fetch_assoc($result);
+		return $row['name'];
+	}
+
+
 	function getBookByIsbn($conn, $isbn){
 		$query = "SELECT book_title, book_author, book_price FROM books WHERE book_isbn = '$isbn'";
 		$result = mysqli_query($conn, $query);
@@ -32,25 +71,37 @@
 		return $result;
 	}
 
-	function getOrderId($conn, $customerid){
-		$query = "SELECT orderid FROM orders WHERE customerid = '$customerid'";
+	function getorderId($conn, $userId){
+		$query = "SELECT orderId FROM orders WHERE userId = '$userId'";
 		$result = mysqli_query($conn, $query);
 		if(!$result){
 			echo "retrieve data failed!" . mysqli_error($conn);
 			exit;
 		}
 		$row = mysqli_fetch_assoc($result);
-		return $row['orderid'];
+		return $row['orderId'];
 	}
 
-	function insertIntoOrder($conn, $customerid, $total_price, $date, $ship_name, $ship_address, $ship_city, $ship_zip_code, $ship_country){
-		$query = "INSERT INTO orders VALUES 
-		('', '" . $customerid . "', '" . $total_price . "', '" . $date . "', '" . $ship_name . "', '" . $ship_address . "', '" . $ship_city . "', '" . $ship_zip_code . "', '" . $ship_country . "')";
+	function insertIntoOrder($userId, $order_ref, $total_price, $date, $ship_name, $ship_phone, $ship_email, $ship_address, $ship_city, $ship_zip_code, $ship_country){
+		$conn = db_connect();
+		$query = "INSERT INTO orders 
+          (order_ref, userId, amount, order_date, ship_name, ship_phone, ship_email, ship_address, ship_city, ship_zip_code, ship_country) 
+          VALUES 
+          ('" . $order_ref . "', '" . $userId . "', '" . $total_price . "', '" . $date . "', '" . $ship_name . "', '" . $ship_phone . "', '" . $ship_email . "', '" . $ship_address . "', '" . $ship_city . "', '" . $ship_zip_code . "', '" . $ship_country . "')";
+
+		
 		$result = mysqli_query($conn, $query);
+
 		if(!$result){
 			echo "Insert orders failed " . mysqli_error($conn);
 			exit;
 		}
+
+		// Get the inserted order's auto-incremented ID
+		$order_id = mysqli_insert_id($conn);
+
+		// Return the order ID
+		return $order_id;
 	}
 
 	function getbookprice($isbn){
@@ -65,9 +116,9 @@
 		return $row['book_price'];
 	}
 
-	function getCustomerId($name, $address, $city, $zip_code, $country){
+	function getuserId($name, $address, $city, $zip_code, $country){
 		$conn = db_connect();
-		$query = "SELECT customerid from customers WHERE 
+		$query = "SELECT userId from customers WHERE 
 		`name` = '$name' AND 
 		`address`= '$address' AND 
 		city = '$city' AND 
@@ -77,13 +128,13 @@
 		// if there is customer in db, take it out
 		if($result->num_rows > 0){
 			$row = mysqli_fetch_assoc($result);
-			return $row['customerid'];
+			return $row['userId'];
 		} else {
 			return null;
 		}
 	}
 
-	function setCustomerId($name, $address, $city, $zip_code, $country){
+	function setuserId($name, $address, $city, $zip_code, $country){
 		$conn = db_connect();
 		$query = "INSERT INTO customers VALUES 
 			('', '" . $name . "', '" . $address . "', '" . $city . "', '" . $zip_code . "', '" . $country . "')";
@@ -93,12 +144,12 @@
 			echo "insert false !" . mysqli_error($conn);
 			exit;
 		}
-		$customerid = mysqli_insert_id($conn);
-		return $customerid;
+		$userId = mysqli_insert_id($conn);
+		return $userId;
 	}
 
 	function getPubName($conn, $pubid){
-		$query = "SELECT publisher_name FROM publisher WHERE publisherid = '$pubid'";
+		$query = "SELECT publisher_name FROM publisher WHERE publisherId = '$pubid'";
 		$result = mysqli_query($conn, $query);
 		if(!$result){
 			echo "Can't retrieve data " . mysqli_error($conn);

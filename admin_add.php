@@ -23,7 +23,7 @@
 		$price = mysqli_real_escape_string($conn, $price);
 		
 		$publisher = trim($_POST['publisher']);
-		$publisherid = mysqli_real_escape_string($conn, $publisher);
+		$publisherId = mysqli_real_escape_string($conn, $publisher);
 
 		// add image
 		if(isset($_FILES['image']) && $_FILES['image']['name'] != ""){
@@ -34,7 +34,7 @@
 			move_uploaded_file($_FILES['image']['tmp_name'], $uploadDirectory);
 		}
 
-		$query = "INSERT INTO books (`book_isbn`, `book_title`, `book_author`, `book_image`, `book_descr`, `book_price`, `publisherid`) VALUES ('" . $isbn . "', '" . $title . "', '" . $author . "', '" . $image . "', '" . $descr . "', '" . $price . "', '" . $publisherid . "')";
+		$query = "INSERT INTO books (`book_isbn`, `book_title`, `book_author`, `book_image`, `book_descr`, `book_price`, `publisherId`) VALUES ('" . $isbn . "', '" . $title . "', '" . $author . "', '" . $image . "', '" . $descr . "', '" . $price . "', '" . $publisherId . "')";
 		$result = mysqli_query($conn, $query);
 		if($result){
 			$_SESSION['book_success'] = "New Book has been added successfully";
@@ -95,7 +95,7 @@
 										$psql = mysqli_query($conn, "SELECT * FROM `publisher` order by publisher_name asc");
 										while($row = mysqli_fetch_assoc($psql)):
 										?>
-										<option value="<?= $row['publisherid'] ?>"><?= $row['publisher_name'] ?></option>
+										<option value="<?= $row['publisherId'] ?>"><?= $row['publisher_name'] ?></option>
 										<?php endwhile; ?>
 									</select>
 

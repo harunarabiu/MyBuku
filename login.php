@@ -4,7 +4,7 @@ if(isset($_SESSION['admin']) && $_SESSION['admin'] == true){
 	header('location:admin_book.php');
 }
 	$title = "Admin Panel";
-	$passwordHash = password_hash("#Password1", PASSWORD_DEFAULT);
+	
 	require_once "./template/header.php";
 ?>
 <div class="row justify-content-center my-5">
@@ -35,12 +35,15 @@ if(isset($_SESSION['admin']) && $_SESSION['admin'] == true){
 						<div class="mb-3 d-grid">
 							<input type="submit" name="submit" class="btn btn-primary rounded-0">
 						</div>
+						<div class="mb-3">
+							<a href="register.php">Register for an Account</a>
+					    </div>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-	<?= var_dump($passwordHash); ?>
+
 </div>
 	
 

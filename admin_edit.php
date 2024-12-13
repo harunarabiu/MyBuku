@@ -87,12 +87,12 @@
 								</div>
 								<div class="mb-3">
 									<label class="control-label">Publisher</label>
-									<select class="form-select rounded-0"  name="publisherid" required>
+									<select class="form-select rounded-0"  name="publisherId" required>
 										<?php 
 										$psql = mysqli_query($conn, "SELECT * FROM `publisher` order by publisher_name asc");
 										while($row = mysqli_fetch_assoc($psql)):
 										?>
-										<option value="<?= $row['publisherid'] ?>" <?= $row['publisherid']==$row['publisherid'] ? 'selected' : '' ?>><?= $row['publisher_name'] ?></option>
+										<option value="<?= $row['publisherId'] ?>" <?= $row['publisherId']==$row['publisherId'] ? 'selected' : '' ?>><?= $row['publisher_name'] ?></option>
 										<?php endwhile; ?>
 									</select>
 

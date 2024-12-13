@@ -94,9 +94,9 @@
 			</div>
 		</div>
 		<div class="card-footer text-end">
-			<input type="submit" class="btn btn-primary rounded-0" name="save_change" value="Save Changes" form="cart-form">
-			<a href="checkout.php" class="btn btn-dark rounded-0">Go To Checkout</a> 
 			<a href="books.php" class="btn btn-warning rounded-0">Continue Shopping</a>
+			<a href="checkout.php" class="btn btn-dark rounded-0">Checkout</a> 
+			
 
 		</div>
 	</div>

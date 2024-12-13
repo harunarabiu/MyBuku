@@ -23,34 +23,72 @@
 
   <body>
     <div class="clear-fix pt-5 pb-3"></div>
-    <nav class="navbar navbar-expand-lg  navbar-expand-md navbar-light bg-warning bg-gradient fixed-top">
+   <nav class="navbar navbar-expand-lg navbar-expand-md navbar-light bg-warning bg-gradient fixed-top">
       <div class="container">
-        <div class="navbar-header">
+        <!-- Brand -->
+        <a class="navbars-brand" href="index.php">MyBuku Store</a>
+
+        <!-- Toggler button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-          <a class="navbar-brand" href="index.php">MyBuku Store</a>
-        </div>
 
-        <!--/.navbar-collapse -->
+        <!-- Navbar Links -->
         <div class="collapse navbar-collapse" id="topNav">
-          <ul class="nav navbar-nav">
-            <?php if(isset($_SESSION['admin']) && $_SESSION['admin'] == true): ?>
-                <li class="nav-item"><a class="nav-link" href="admin_book.php"><span class="fa fa-th-list"></span> Book List</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_add.php"><span class="far fa-plus-square"></span> Add New Book</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_signout.php"><span class="fa fa-sign-out-alt"></span> Logout</a></li>
-            <?php else: ?>
-              <!-- link to publiser_list.php -->
+          <!-- Right-aligned menu -->
+          <ul class="navbar-nav ms-auto">
+            <!-- Conditional Admin Links -->
+            <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] == true): ?>
+              <li class="nav-item"><a class="nav-link" href="admin_book.php"><span class="fa fa-th-list"></span> Book Manager</a></li>
+              <li class="nav-item"><a class="nav-link" href="admin_add.php"><span class="far fa-plus-square"></span> Add New Book</a></li>
+              <?php endif; ?>
               <li class="nav-item"><a class="nav-link" href="publisher_list.php"><span class="fa fa-paperclip"></span> Publisher</a></li>
-              <!-- link to books.php -->
               <li class="nav-item"><a class="nav-link" href="books.php"><span class="fa fa-book"></span> Books</a></li>
-              <!-- link to shopping cart -->
-              <li class="nav-item"><a class="nav-link" href="cart.php"><span class="fa fa-shopping-cart"></span> My Cart</a></li>
-            <?php endif; ?>
-            </ul>
+              <li class="nav-item">
+                <a class="nav-link position-relative" href="cart.php">
+                  <i class="fa fa-shopping-cart" style="font-size: 20px;"></i>
+                  <?php if (isset($_SESSION['total_items']) && $_SESSION['total_items'] > 0): ?>
+                    <span class="badge bg-danger position-absolute" style="top: -5px; left: 15px; font-size: 10px; padding: 2px 5px;">
+                      <?php echo $_SESSION['total_items']; ?>
+                    </span>
+                  <?php endif; ?>
+                  Cart
+                </a>
+              </li>
+
+         
+
+            <!-- Orders Link -->
+            <li class="nav-item"><a class="nav-link" href="orders.php"><span class="fa fa-box"></span> Orders</a></li>
+
+            <!-- User Avatar and Dropdown -->
+            <li class="nav-item dropdown">
+              <?php if (isset($_SESSION['user'])): ?>
+                <!-- User logged in -->
+                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-user-circle" style="font-size: 24px; color: #333;"></i>
+                  <?php echo htmlspecialchars($_SESSION['user']['name']); ?>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                  <!-- <li><a class="dropdown-item" href="profile.php">Profile</a></li> -->
+                  <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                </ul>
+              <?php else: ?>
+                <!-- User not logged in -->
+                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-user-circle" style="font-size: 24px; color: #333;"></i> Account
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                  <li><a class="dropdown-item" href="login.php">Login</a></li>
+                  <li><a class="dropdown-item" href="register.php">Register</a></li>
+                </ul>
+              <?php endif; ?>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
+
     <?php
       if(isset($title) && $title == "Home") {
     ?>

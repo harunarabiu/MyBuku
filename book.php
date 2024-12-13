@@ -44,7 +44,7 @@
                   <h4>Details</h4>
                   <table class="table">
                     <?php foreach($row as $key => $value){
-                      if($key == "book_descr" || $key == "book_image" || $key == "publisherid" || $key == "book_title"){
+                      if($key == "book_descr" || $key == "book_image" || $key == "publisherId" || $key == "book_title"){
                         continue;
                       }
                       switch($key){
@@ -74,7 +74,7 @@
                   <form method="post" action="cart.php">
                     <input type="hidden" name="bookisbn" value="<?php echo $book_isbn;?>">
                     <div class="text-center">
-                      <input type="submit" value="Purchase / Add to cart" name="cart" class="btn btn-primary rounded-0">
+                      <input type="submit" value="Add to cart" name="cart" class="btn btn-primary rounded-0">
                     </div>
                   </form>
               </div>

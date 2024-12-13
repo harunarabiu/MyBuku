@@ -3,7 +3,7 @@
 	require_once "./functions/database_functions.php";
 	$conn = db_connect();
 
-	$query = "SELECT * FROM publisher ORDER BY publisherid";
+	$query = "SELECT * FROM publisher ORDER BY publisherId";
 	$result = mysqli_query($conn, $query);
 	if(!$result){
 		echo "Can't retrieve data " . mysqli_error($conn);
@@ -26,19 +26,19 @@
 	<?php 
 		while($row = mysqli_fetch_assoc($result)){
 			$count = 0; 
-			$query = "SELECT publisherid FROM books";
+			$query = "SELECT publisherId FROM books";
 			$result2 = mysqli_query($conn, $query);
 			if(!$result2){
 				echo "Can't retrieve data " . mysqli_error($conn);
 				exit;
 			}
 			while ($pubInBook = mysqli_fetch_assoc($result2)){
-				if($pubInBook['publisherid'] == $row['publisherid']){
+				if($pubInBook['publisherId'] == $row['publisherId']){
 					$count++;
 				}
 			}
 	?>
-		<a class="list-group-item list-group-item-action" href="bookPerPub.php?pubid=<?php echo $row['publisherid']; ?>">
+		<a class="list-group-item list-group-item-action" href="bookPerPub.php?pubid=<?php echo $row['publisherId']; ?>">
 			<span class="badge badge-primary bg-primary rounded-pill"><?php echo $count; ?></span>
 			<?php echo $row['publisher_name']; ?>
 		</a>

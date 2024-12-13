@@ -15,6 +15,7 @@
 	
 	if($email == "" || $password == ""){
 		echo "Email and passwordword are required!";
+		header("Location: login.php");
 		exit;
 	}
 
@@ -26,7 +27,7 @@
 	// Secure login check
 
 	// Prepare SQL statement to prevent SQL injection
-	$query = "SELECT `email`, `passwordHash`, `user_type` FROM `users` WHERE `email` = ?";
+	$query = "SELECT * FROM `users` WHERE `email` = ?";
 	$stmt = mysqli_prepare($conn, $query);
 
 	// Bind parameters and execute
@@ -72,5 +73,5 @@
 
 	
 
-	header("Location: admin_book.php");
+	header("Location: index.php");
 ?>

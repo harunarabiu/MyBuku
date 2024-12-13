@@ -46,7 +46,7 @@ CREATE TABLE `books` (
   `book_image` varchar(40) COLLATE latin1_general_ci DEFAULT NULL,
   `book_descr` text COLLATE latin1_general_ci DEFAULT NULL,
   `book_price` decimal(6,2) NOT NULL,
-  `publisherid` int(10) UNSIGNED NOT NULL,
+  `publisherId` int(10) UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
@@ -54,7 +54,7 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `book_descr`, `book_price`, `publisherid`, `created_at`) VALUES
+INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `book_descr`, `book_price`, `publisherId`, `created_at`) VALUES
 ('64568', 'Sample 102', 'Sample Author 2', 'dark-bg.jpg', 'Test - updated', '1200.00', 6, '2022-06-21 16:44:25'),
 ('978-0-321-94786-4', 'Learning Mobile App Development', 'Jakob Iversen, Michael Eierman', 'mobile_app.jpg', 'Now, one book can help you master mobile app development with both market-leading platforms: Apple\'s iOS and Google\'s Android. Perfect for both students and professionals, Learning Mobile App Development is the only tutorial with complete parallel coverage of both iOS and Android. With this guide, you can master either platform, or both - and gain a deeper understanding of the issues associated with developing mobile apps.\r\n\r\nYou\'ll develop an actual working app on both iOS and Android, mastering the entire mobile app development lifecycle, from planning through licensing and distribution.\r\n\r\nEach tutorial in this book has been carefully designed to support readers with widely varying backgrounds and has been extensively tested in live developer training courses. If you\'re new to iOS, you\'ll also find an easy, practical introduction to Objective-C, Apple\'s native language.', '20.00', 6, '2022-06-21 16:44:25'),
 ('978-0-7303-1484-4', 'Doing Good By Doing Good', 'Peter Baines', 'doing_good.jpg', 'Doing Good by Doing Good shows companies how to improve the bottom line by implementing an engaging, authentic, and business-enhancing program that helps staff and business thrive. International CSR consultant Peter Baines draws upon lessons learnt from the challenges faced in his career as a police officer, forensic investigator, and founder of Hands Across the Water to describe the Australian CSR landscape, and the factors that make up a program that benefits everyone involved. Case studies illustrate the real effect of CSR on both business and society, with clear guidance toward maximizing involvement, engaging all employees, and improving the bottom line. The case studies draw out the companies that are focusing on creating shared value in meeting the challenges of society whilst at the same time bringing strong economic returns.\r\n\r\nConsumers are now expecting that big businesses with ever-increasing profits give back to the community from which those profits arise. At the same time, shareholders are demanding their share and are happy to see dividends soar. Getting this right is a balancing act, and Doing Good by Doing Good helps companies delineate a plan of action for getting it done.', '20.00', 2, '2022-06-21 16:44:25'),
@@ -73,7 +73,7 @@ INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `bo
 --
 
 CREATE TABLE `customers` (
-  `customerid` int(10) UNSIGNED NOT NULL,
+  `userId` int(10) UNSIGNED NOT NULL,
   `name` varchar(60) COLLATE latin1_general_ci NOT NULL,
   `address` varchar(80) COLLATE latin1_general_ci NOT NULL,
   `city` varchar(30) COLLATE latin1_general_ci NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`customerid`, `name`, `address`, `city`, `zip_code`, `country`) VALUES
+INSERT INTO `customers` (`userId`, `name`, `address`, `city`, `zip_code`, `country`) VALUES
 (1, 'a', 'a', 'a', 'a', 'a'),
 (2, 'b', 'b', 'b', 'b', 'b'),
 (3, 'test', '123 test', '12121', 'test', 'test'),
@@ -102,8 +102,8 @@ INSERT INTO `customers` (`customerid`, `name`, `address`, `city`, `zip_code`, `c
 --
 
 CREATE TABLE `orders` (
-  `orderid` int(10) UNSIGNED NOT NULL,
-  `customerid` int(10) UNSIGNED NOT NULL,
+  `orderId` int(10) UNSIGNED NOT NULL,
+  `userId` int(10) UNSIGNED NOT NULL,
   `amount` decimal(6,2) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `ship_name` char(60) COLLATE latin1_general_ci NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`, `ship_name`, `ship_address`, `ship_city`, `ship_zip_code`, `ship_country`) VALUES
+INSERT INTO `orders` (`orderId`, `userId`, `amount`, `date`, `ship_name`, `ship_address`, `ship_city`, `ship_zip_code`, `ship_country`) VALUES
 (1, 1, '60.00', '2015-12-03 13:30:12', 'a', 'a', 'a', 'a', 'a'),
 (2, 2, '60.00', '2015-12-03 13:31:12', 'b', 'b', 'b', 'b', 'b'),
 (3, 3, '20.00', '2015-12-03 19:34:21', 'test', '123 test', '12121', 'test', 'test'),
@@ -135,7 +135,7 @@ INSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`, `ship_name`, `s
 --
 
 CREATE TABLE `order_items` (
-  `orderid` int(10) UNSIGNED NOT NULL,
+  `orderId` int(10) UNSIGNED NOT NULL,
   `book_isbn` varchar(20) COLLATE latin1_general_ci NOT NULL,
   `item_price` decimal(6,2) NOT NULL,
   `quantity` tinyint(3) UNSIGNED NOT NULL
@@ -145,7 +145,7 @@ CREATE TABLE `order_items` (
 -- Dumping data for table `order_items`
 --
 
-INSERT INTO `order_items` (`orderid`, `book_isbn`, `item_price`, `quantity`) VALUES
+INSERT INTO `order_items` (`orderId`, `book_isbn`, `item_price`, `quantity`) VALUES
 (1, '978-1-118-94924-5', '20.00', 1),
 (1, '978-1-44937-019-0', '20.00', 1),
 (1, '978-1-49192-706-9', '20.00', 1),
@@ -170,7 +170,7 @@ INSERT INTO `order_items` (`orderid`, `book_isbn`, `item_price`, `quantity`) VAL
 --
 
 CREATE TABLE `publisher` (
-  `publisherid` int(10) UNSIGNED NOT NULL,
+  `publisherId` int(10) UNSIGNED NOT NULL,
   `publisher_name` varchar(60) COLLATE latin1_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
@@ -178,7 +178,7 @@ CREATE TABLE `publisher` (
 -- Dumping data for table `publisher`
 --
 
-INSERT INTO `publisher` (`publisherid`, `publisher_name`) VALUES
+INSERT INTO `publisher` (`publisherId`, `publisher_name`) VALUES
 (1, 'Publisher 1'),
 (2, 'Publisher 2'),
 (3, 'Publisher 3'),
@@ -206,19 +206,19 @@ ALTER TABLE `books`
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
-  ADD PRIMARY KEY (`customerid`);
+  ADD PRIMARY KEY (`userId`);
 
 --
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`orderid`);
+  ADD PRIMARY KEY (`orderId`);
 
 --
 -- Indexes for table `publisher`
 --
 ALTER TABLE `publisher`
-  ADD PRIMARY KEY (`publisherid`);
+  ADD PRIMARY KEY (`publisherId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -228,17 +228,17 @@ ALTER TABLE `publisher`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customerid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `userId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `orderId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `publisher`
 --
 ALTER TABLE `publisher`
-  MODIFY `publisherid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `publisherId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
