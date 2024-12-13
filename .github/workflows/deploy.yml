@@ -50,7 +50,7 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name $ELASTIC_BEANSTALK_NAME \
-            --version-label "mybukuapp-version-${{ github.run_number }}" \
+            --version-label "mybukuapp-version-${{ github.run_number }}-${{ github.run_id }}" \
             --source-bundle S3Bucket="mybukustore",S3Key="$ZIP_NAME"
 
       - name: Update Environment
@@ -58,7 +58,7 @@ jobs:
           aws elasticbeanstalk update-environment \
             --application-name $ELASTIC_BEANSTALK_NAME \
             --environment-name $ELASTIC_BEANSTALK_ENV_NAME \
-            --version-label "mybukuapp-version-${{ github.run_number }}"
+            --version-label "mybukuapp-version-${{ github.run_number }}-${{ github.run_id }}"
 
       - name: Wait for Environment Update
         run: |
