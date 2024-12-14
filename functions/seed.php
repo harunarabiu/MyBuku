@@ -5,13 +5,32 @@
 // $username = 'root';  // Adjust this to your database username
 // $password = '';  // Adjust this to your database password
 
-$host = "mynetwork-rdsinstance-ld8ekrenleuz.chqmq2008d5p.ap-southeast-1.rds.amazonaws.com";
-$dbname = "mybuku";
-$username = "admin";
-$password = "MyBuku123!";
+	require_once './vendor/autoload.php'; // Path to Composer autoload file
+
+
+		
+
+			
+
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+
+    // Load environment variables from .env file if it exists
+    $directory = dirname(__DIR__);
+    if (file_exists($directory . '/.env')) {
+        $dotenv = Dotenv\Dotenv::createImmutable($directory);
+        $dotenv->load();
+    } else {
+        error_log('.env file not found, falling back to system environment variables.');
+    }
+
+    // Retrieve database credentials from environment variables
+    $db_host = $_ENV['DB_HOST'] ?? getenv('DB_HOST');
+    $db_user = $_ENV['DB_USER'] ?? getenv('DB_USER');
+    $db_password = $_ENV['DB_PASS'] ?? getenv('DB_PASS');
+    $db_name = $_ENV['DB_NAME'] ?? getenv('DB_NAME');
+
+    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Drop tables if they exist

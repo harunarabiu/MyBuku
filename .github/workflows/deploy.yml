@@ -58,7 +58,7 @@ jobs:
           aws elasticbeanstalk update-environment \
             --application-name $ELASTIC_BEANSTALK_NAME \
             --environment-name $ELASTIC_BEANSTALK_ENV_NAME \
-            --version-label "mybukuapp-version-${{ github.run_number }}-${{ github.run_id }}"
+            --version-label "mybukuapp-version-${{ github.run_number }}-${{ github.run_id }}" \
             --option-settings file://option-settings.json
 
       - name: Wait for Environment Update
