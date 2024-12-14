@@ -59,7 +59,11 @@ jobs:
             --application-name $ELASTIC_BEANSTALK_NAME \
             --environment-name $ELASTIC_BEANSTALK_ENV_NAME \
             --version-label "mybukuapp-version-${{ github.run_number }}-${{ github.run_id }}" \
-            --environment-variables DB_HOST=${{ secrets.DB_HOST }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }}
+            --option-settings \
+              Namespace=aws:elasticbeanstalk:application:environment,OptionName=DB_HOST,Value=${{ secrets.DB_HOST }} \
+              Namespace=aws:elasticbeanstalk:application:environment,OptionName=DB_USER,Value=${{ secrets.DB_USER }} \
+              Namespace=aws:elasticbeanstalk:application:environment,OptionName=DB_PASS,Value=${{ secrets.DB_PASS }} \
+              Namespace=aws:elasticbeanstalk:application:environment,OptionName=DB_NAME,Value=${{ secrets.DB_NAME }}
 
       - name: Wait for Environment Update
         run: |
