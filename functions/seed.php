@@ -1,17 +1,6 @@
 <?php
-// Database connection
-// $host = '127.0.0.1';
-// $dbname = 'mybukutest';
-// $username = 'root';  // Adjust this to your database username
-// $password = '';  // Adjust this to your database password
 
-	require_once './vendor/autoload.php'; // Path to Composer autoload file
-
-
-		
-
-			
-
+require_once './vendor/autoload.php'; // Path to Composer autoload file
 
 try {
 
