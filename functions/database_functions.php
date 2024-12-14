@@ -1,27 +1,47 @@
 <?php
-	function db_connect(){
-		// $db_host = "mynetwork-rdsinstance-ld8ekrenleuz.chqmq2008d5p.ap-southeast-1.rds.amazonaws.com";
-		// $db_name = "mybuku";
-		// $db_user = "admin";
-        // $db_password = "MyBuku123!";
+
+	require_once './vendor/autoload.php'; // Path to Composer autoload file
 
 
-		//local DB configurations
-
-		$db_host = "localhost";
-		$db_name = "mybuku";
-		$db_user = "root";
-        $db_password = "";
-        
+	function db_connect() {
 		
-		$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+		try {
+			// Load environment variables from .env file if it exists
+			$directory = dirname(__DIR__);
+			if (file_exists($directory . '/.env')) {
+				$dotenv = Dotenv\Dotenv::createImmutable($directory);
+				$dotenv->load();
+			} else {
+				error_log('.env file not found, falling back to system environment variables.');
+			}
 
-		if(!$conn){
-			echo "Can't connect database " . mysqli_connect_error($conn);
-			exit;
+			// Retrieve database credentials from environment variables
+			$db_host = $_ENV['DB_HOST'] ?? getenv('DB_HOST');
+			$db_user = $_ENV['DB_USER'] ?? getenv('DB_USER');
+			$db_password = $_ENV['DB_PASS'] ?? getenv('DB_PASS');
+			$db_name = $_ENV['DB_NAME'] ?? getenv('DB_NAME');
+
+			// // Validate required environment variables
+			// if (!$db_host || !$db_user || !$db_password || !$db_name) {
+			// 	throw new Exception('Missing required database environment variables.');
+			// }
+
+			// Establish database connection
+			$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+
+			if (!$conn) {
+				throw new Exception('Database connection failed: ' . mysqli_connect_error());
+			}
+
+			return $conn;
+
+		} catch (Exception $e) {
+			// Log and display the error
+			error_log('Error in db_connect: ' . $e->getMessage());
+			die('A database connection error occurred. Please try again later.'.$e->getMessage());
 		}
-		return $conn;
 	}
+
 
 	function select4LatestBook($conn){
 		$row = array();

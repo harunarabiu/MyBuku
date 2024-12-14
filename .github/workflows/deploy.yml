@@ -38,7 +38,7 @@ jobs:
 
       - name: Package Application
         run: |
-          ZIP_NAME="mybukuapp-${{ github.run_number }}.zip"
+          ZIP_NAME="mybukuapp-${{ github.run_number }}-${{ github.run_id }}.zip"
           zip -r $ZIP_NAME . -x "*.git*" ".github/*" "tests/*" "*.env" "*.zip" "node_modules/*"
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
@@ -59,6 +59,7 @@ jobs:
             --application-name $ELASTIC_BEANSTALK_NAME \
             --environment-name $ELASTIC_BEANSTALK_ENV_NAME \
             --version-label "mybukuapp-version-${{ github.run_number }}-${{ github.run_id }}"
+            --option-settings file://option-settings.json
 
       - name: Wait for Environment Update
         run: |
